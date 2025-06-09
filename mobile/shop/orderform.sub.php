@@ -570,13 +570,52 @@ if($is_kakaopay_use) {
                     $checked = '';
                 }
 
-                // 신용카드 사용
-                if ($default['de_card_use']) {
+
+                $psysPgCodeLower = strtolower($default['de_pg_service']);
+                // 연구비카드 사용
+               if ((strpos($default["de_{$psysPgCodeLower}_card_type"], "1") !== false || strpos($default["de_{$psysPgCodeLower}_card_type"], "9") !== false)) {
                     $multi_settle++;
-                    echo '<li><input type="radio" id="od_settle_card" name="od_settle_case" value="연구비카드결제" '.$checked.'> <label for="od_settle_card" class="lb_icon card_icon">연구비카드결제</label></li>'.PHP_EOL;
+                    echo '<li><input type="radio" id="od_settle_research" name="od_settle_case" value="연구비카드결제" '.$checked.'> <label for="od_settle_research" class="lb_icon card_icon">연구비카드결제</label></li>'.PHP_EOL;
                     $checked = '';
                 }
-
+                // 일반카드 사용
+                if (strpos($default["de_{$psysPgCodeLower}_card_type"], "3") !== false || strpos($default["de_{$psysPgCodeLower}_card_type"], "9") !== false) {
+                    $multi_settle++;
+                    echo '<li><input type="radio" id="od_settle_card" name="od_settle_case" value="일반카드결제" '.$checked.'> <label for="od_settle_card" class="lb_icon card_icon">일반카드결제</label></li>'.PHP_EOL;
+                    $checked = '';
+                }
+                // 키인결제 사용
+                if (strpos($default["de_{$psysPgCodeLower}_card_type"], "4") !== false) {
+                    $multi_settle++;
+                    echo '<li><input type="radio" id="od_settle_keyin" name="od_settle_case" value="키인결제" '.$checked.'> <label for="od_settle_keyin" class="lb_icon card_icon">키인결제</label></li>'.PHP_EOL;
+                    $checked = '';
+                }
+                // 계좌이체 사용
+                if (strpos($default["de_{$psysPgCodeLower}_card_type"], "5") !== false) {
+                    $multi_settle++;
+                    echo '<li><input type="radio" id="od_settle_account" name="od_settle_case" value="계좌이체" '.$checked.'> <label for="od_settle_account" class="lb_icon card_icon">계좌이체</label></li>'.PHP_EOL;
+                    $checked = '';
+                }
+                // 가상계좌 사용
+                if (strpos($default["de_{$psysPgCodeLower}_card_type"], "6") !== false) {
+                    $multi_settle++;
+                    echo '<li><input type="radio" id="od_settle_vacct" name="od_settle_case" value="가상계좌" '.$checked.'> <label for="od_settle_vacct" class="lb_icon card_icon">가상계좌</label></li>'.PHP_EOL;
+                    $checked = '';
+                }
+                // 네이버페이 사용
+                if (strpos($default["de_{$psysPgCodeLower}_card_type"], "32") !== false) {
+                    $multi_settle++;
+                    echo '<li><input type="radio" id="od_settle_naverpay" name="od_settle_naverpay" value="네이버페이" '.$checked.'> <label for="od_settle_card" class="lb_icon card_icon">네이버페이</label></li>'.PHP_EOL;
+                    $checked = '';
+                }                   
+                // 카카오페이 사용
+                if (strpos($default["de_{$psysPgCodeLower}_card_type"], "31") !== false) {
+                    $multi_settle++;
+                    echo '<li><input type="radio" id="od_settle_kakaopay" name="od_settle_case" value="카카오페이" '.$checked.'> <label for="od_settle_kakaopay" class="lb_icon card_icon">카카오페이</label></li>'.PHP_EOL;
+                    $checked = '';
+                }
+                                                                             
+                
             } else { 
 
 
