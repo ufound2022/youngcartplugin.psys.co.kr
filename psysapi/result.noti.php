@@ -15,6 +15,8 @@ $psysapi = json_decode(file_get_contents('php://input'), true);
 /*
 ([통지]수신)
 {
+    "RESULTCODE":"0000",
+    "RESULTMSG":"\uc0c1\uacf5",
     "CP_ID":"CTS18304",
     "API_ID":"sandbox_7fLAXEQa1L",
     "ORDERNO":"SRS20250508093947857860",
@@ -40,18 +42,8 @@ $psysapi = json_decode(file_get_contents('php://input'), true);
     "ETC7":null,
     "PAY_METHOD":"CARD",
     "SMS_INPUT":"",
-    "BILLKEY":"4degzpumk8owg00o33ij",
-    "GENDATE":"2025-05-08 09:35:39",
     "BUYERADDRESS":"",
     "BUYERPHONE":"01076764624",
-    "RESULTCODE":"0000",
-    "RESULTMSG":"\uc0c1\uacf5",
-    "RESERVE_ID":"8c96vu3u8ls84c8cocg02mf5lkrk",
-    "RESERVE_ORDERNO":"2025050809341263",
-    "PAY_CNT":"2",
-    "LAST_PAY_CNT":"5",
-    "TRY_CNT":"1",
-    "NEXT_PAY_DATE":"2025-06-10"
 }
 */
 # 정기(반복) 결제 통지 수신(E) 
@@ -62,6 +54,10 @@ $psysapi = json_decode(file_get_contents('php://input'), true);
 @psysapi_payment_log("[통지]스타트", ' : OK', 3);
 @psysapi_payment_log("[통지]수신", json_encode($psysapi), 3);
 
+$params_sb['RESULTCODE'] = isset($psysapi['RESULTCODE']) && !empty($psysapi['RESULTCODE']) ? $psysapi['RESULTCODE'] : '';
+$params_sb['RESULTMSG'] = isset($psysapi['RESULTMSG']) && !empty($psysapi['RESULTMSG']) ? $psysapi['RESULTMSG'] : '';
+$params_sb['PAY_METHOD'] = isset($psysapi['PAY_METHOD']) && !empty($psysapi['PAY_METHOD']) ? $psysapi['PAY_METHOD'] : '';
+
 $params_sb['ORDERNO'] = isset($psysapi['ORDERNO']) && !empty($psysapi['ORDERNO']) ? $psysapi['ORDERNO'] : ''; 
 $params_sb['AMOUNT'] = isset($psysapi['AMOUNT']) && !empty($psysapi['AMOUNT']) ? $psysapi['AMOUNT'] : '';
 $params_sb['USERID'] = isset($psysapi['USERID']) && !empty($psysapi['USERID']) ? $psysapi['USERID'] : ''; 
@@ -69,40 +65,34 @@ $params_sb['BUYERNAME'] = isset($psysapi['BUYERNAME']) && !empty($psysapi['BUYER
 $params_sb['BUYEREMAIL'] = isset($psysapi['BUYEREMAIL']) && !empty($psysapi['BUYEREMAIL']) ? $psysapi['BUYEREMAIL'] : ''; 
 $params_sb['PRODUCTNAME'] = isset($psysapi['PRODUCTNAME']) && !empty($psysapi['PRODUCTNAME']) ? $psysapi['PRODUCTNAME'] : '';  
 $params_sb['PRODUCTCODE'] = isset($psysapi['PRODUCTCODE']) && !empty($psysapi['PRODUCTCODE']) ? $psysapi['PRODUCTCODE'] : ''; 
-$params_sb['RESERVE_ORDERNO'] = isset($psysapi['RESERVE_ORDERNO']) && !empty($psysapi['RESERVE_ORDERNO']) ? $psysapi['RESERVE_ORDERNO'] : '';
-$params_sb['PAY_CNT'] = isset($psysapi['PAY_CNT']) && !empty($psysapi['PAY_CNT']) ? $psysapi['PAY_CNT'] : '';
 $params_sb['TID'] = isset($psysapi['TID']) && !empty($psysapi['TID']) ? $psysapi['TID'] : '';
 $params_sb['ACCEPT_NO'] = isset($psysapi['ACCEPT_NO']) && !empty($psysapi['ACCEPT_NO']) ? $psysapi['ACCEPT_NO'] : '';
 $params_sb['ACCEPT_DATE'] = isset($psysapi['ACCEPT_DATE']) && !empty($psysapi['ACCEPT_DATE']) ? $psysapi['ACCEPT_DATE'] : '';
-$params_sb['RESERVE_ID'] = isset($psysapi['RESERVE_ID']) && !empty($psysapi['RESERVE_ID']) ? $psysapi['RESERVE_ID'] : '';
 $params_sb['CARDNAME'] = isset($psysapi['CARDNAME']) && !empty($psysapi['CARDNAME']) ? $psysapi['CARDNAME'] : '';
-
-$params_sb['BILLKEY'] = isset($psysapi['BILLKEY']) && !empty($psysapi['BILLKEY']) ? $psysapi['BILLKEY'] : '';
-$params_sb['GENDATE'] = isset($psysapi['GENDATE']) && !empty($psysapi['GENDATE']) ? $psysapi['GENDATE'] : '';
-
-$params_sb['RESULTCODE'] = isset($psysapi['RESULTCODE']) && !empty($psysapi['RESULTCODE']) ? $psysapi['RESULTCODE'] : '';
-$params_sb['RESULTMSG'] = isset($psysapi['RESULTMSG']) && !empty($psysapi['RESULTMSG']) ? $psysapi['RESULTMSG'] : '';
-$params_sb['NEXT_PAY_DATE'] = isset($psysapi['NEXT_PAY_DATE']) && !empty($psysapi['NEXT_PAY_DATE']) ? $psysapi['NEXT_PAY_DATE'] : '';
 
 $params_sb['ETC1'] = isset($psysapi['ETC1']) && !empty($psysapi['ETC1']) ? $psysapi['ETC1'] : '';
 $params_sb['ETC2'] = isset($psysapi['ETC2']) && !empty($psysapi['ETC2']) ? $psysapi['ETC2'] : '';
 $params_sb['ETC3'] = isset($psysapi['ETC3']) && !empty($psysapi['ETC3']) ? $psysapi['ETC3'] : '';
 $params_sb['ETC4'] = isset($psysapi['ETC4']) && !empty($psysapi['ETC4']) ? $psysapi['ETC4'] : '';
 $params_sb['ETC5'] = isset($psysapi['ETC5']) && !empty($psysapi['ETC5']) ? $psysapi['ETC5'] : '';
-
 // s: psysapi-plugin > 피시스 API
 # 피시스 API 필요인자값 
 $params_sb['VENDOR_ORDER_NO'] = isset($psysapi['VENDOR_ORDER_NO']) && !empty($psysapi['VENDOR_ORDER_NO']) ? $psysapi['VENDOR_ORDER_NO'] : ''; 
-if(!empty($params_sb['ORDERNO'])) { 
+if(!empty($params_sb['VENDOR_ORDER_NO'])) { 
     $psysapi['ORDERNO'] = $params_sb['VENDOR_ORDER_NO'];
+} else {
+    $psysapi['ORDERNO'] = isset($psysapi['ORDERNO']) && !empty($psysapi['ORDERNO']) ? $psysapi['ORDERNO'] : '';
 }
+
+$od_cash_no = "3";
+$od_cash_info = $params_sb['PAY_METHOD'];
+
 // e: psysapi-plugin > 피시스 API
 
 @psysapi_payment_log("[통지]결제결과 저장 성공1", $psysapi, 3);
 
 $psysapi['ACCEPT_NO'] = isset($psysapi['ACCEPT_NO']) && !empty($psysapi['ACCEPT_NO']) ? $psysapi['ACCEPT_NO'] : '';
 $psysapi['TID'] = isset($psysapi['TID']) && !empty($psysapi['TID']) ? $psysapi['TID'] : '';
-$psysapi['ORDERNO'] = isset($psysapi['ORDERNO']) && !empty($psysapi['ORDERNO']) ? $psysapi['ORDERNO'] : '';
 
 $resultMode = null;
 
@@ -262,6 +252,8 @@ if(!empty($psysapi['ACCEPT_NO']) && !empty($psysapi['TID']) && !empty($psysapi['
                         $values[$key] = "'{$val}'";
                     }
                 }
+
+                $values['ORDERNO'] = "'{$psysapi['ORDERNO']}'"; // VENDOR_ORDER_NO 값을 저장하기 위함 > 선언 92라인
                 $valueStr = implode(",", $values);
 
                 $sql = " INSERT INTO ".PSYSAPI_PG_VERIFY." ({$columnStr}) VALUES ({$valueStr}) ";
@@ -363,7 +355,7 @@ if(!empty($psysapi['ACCEPT_NO']) && !empty($psysapi['TID']) && !empty($psysapi['
                                         od_mod_history      = '{$order_data['od_mod_history']}',
                                         od_status           = '{$od_status}',
                                         od_hope_date        = '{$order_data['od_hope_date']}',
-                                        od_settle_case      = '{$order_data['od_settle_case']}',
+                                        od_settle_case      = '연구비카드결제',
                                         od_other_pay_type   = '{$order_data['od_other_pay_type']}',
                                         od_test             = '{$order_data['od_test']}',
                                         od_mobile           = '{$order_data['od_mobile']}',
@@ -380,8 +372,8 @@ if(!empty($psysapi['ACCEPT_NO']) && !empty($psysapi['TID']) && !empty($psysapi['
                                         od_invoice          = '{$order_data['od_invoice']}',
                                         od_invoice_time     = '{$order_data['od_invoice_time']}',
                                         od_cash             = '{$order_data['od_cash']}',
-                                        od_cash_no          = '{$order_data['od_cash_no']}',
-                                        od_cash_info        = '{$order_data['od_cash_info']}',
+                                        od_cash_no          = '{$od_cash_no}',
+                                        od_cash_info        = '{$od_cash_info}',
                                         od_time             = '".G5_TIME_YMDHIS."',
                                         od_pwd              = '{$order_data['od_pwd']}',
                                         od_ip               = '{$order_data['od_ip']}'
