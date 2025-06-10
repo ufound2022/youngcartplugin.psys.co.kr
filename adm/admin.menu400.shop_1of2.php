@@ -20,6 +20,6 @@ if (!defined('G5_USE_SHOP') || !G5_USE_SHOP) return;
     array('400410', '미완료주문', G5_ADMIN_URL.'/shop_admin/inorderlist.php', 'scf_inorder', 1),
 
     // s: psysapi-plugin
-    array('400900', '결제내역', G5_ADMIN_URL.'/shop_admin/psysapi.pgresult.php', 'scf_psysapi_pgresult', 1),
+    array('400900', '피시스api 결제내역', G5_ADMIN_URL.'/shop_admin/psysapi.pgresult.php', 'scf_psysapi_pgresult', 1),
     // e: psysapi-plugin
 );

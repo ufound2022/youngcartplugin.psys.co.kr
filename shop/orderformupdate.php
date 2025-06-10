@@ -180,6 +180,10 @@ if (!empty($od_id))
         $od_deposit_name = $order_data['od_deposit_name'];
     }
 }
+
+if(strpos($default['de_pg_service'], "PSYS") !== false) { 
+    $od_settle_case = "연구비카드결제";
+}
 // e: psysapi-plugin
 
 //이니시스 lpay 요청으로 왔다면 $default['de_pg_service'] 값을 이니시스로 변경합니다.

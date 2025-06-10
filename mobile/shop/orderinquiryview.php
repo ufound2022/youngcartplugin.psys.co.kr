@@ -249,6 +249,12 @@ if($od['od_pg'] == 'lg') {
             $app_no = $od['od_app_no'];
             $disp_bank = false;
             $disp_receipt = true;
+
+            // s: psysapi-plugin > 가상계좌는 계좌번호 보이도록 설정
+            if($od['od_cash_info'] == "VACCT") { 
+                $disp_bank = true;
+            }     
+            // e: psysapi-plugin       
         } else if($od['od_settle_case'] == '간편결제') {
             $app_no_subj = '승인번호';
             $app_no = $od['od_app_no'];
@@ -329,7 +335,9 @@ if($od['od_pg'] == 'lg') {
                 <?php
                 }
 
-                if($disp_receipt) {
+                // s : psysapi-plugin
+                if($disp_receipt && !empty($od['od_tno'])) {
+                // e : psysapi-plugin       
                 ?>
                 <tr>
                     <th scope="row">영수증</th>
