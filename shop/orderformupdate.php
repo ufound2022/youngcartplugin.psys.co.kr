@@ -181,7 +181,7 @@ if (!empty($od_id))
     }
 }
 
-if(strpos($default['de_pg_service'], "PSYS") !== false) { 
+if(strpos($default['de_pg_service'], "PSYS") !== false && $_POST['od_settle_case'] != "무통장") { 
     $od_settle_case = "연구비카드결제";
 }
 // e: psysapi-plugin
